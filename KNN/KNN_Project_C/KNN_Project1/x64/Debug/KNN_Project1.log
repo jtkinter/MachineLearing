@@ -1,0 +1,104 @@
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(538,5): warning MSB8028: 中间目录(x64\Debug\)包含从另一个项目(KNN_Train.vcxproj)共享的文件。   这会导致错误的清除和重新生成行为。
+knn_algorithm.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/INCREMENTAL:NO”规范)
+matplot.lib(gnuplot.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(gnuplot.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(axis_type.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(axis_type.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(line_spec.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(line_spec.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(legend.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(legend.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(figure_type.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(figure_type.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(line.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(line.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(axes_type.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(axes_type.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(labels.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(labels.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(matrix.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(matrix.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(axes_functions.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(axes_functions.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(figure_registry.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(figure_registry.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(backend_interface.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(backend_interface.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(common.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(common.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(colors.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(colors.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(backend_registry.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(backend_registry.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(histogram.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(histogram.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(axes_object.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(axes_object.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(error_bar.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(error_bar.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(function_line.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(function_line.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(contourc.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(contourc.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(world_map_10m.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(world_map_10m.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(world_map_50m.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(world_map_50m.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(world_map_110m.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(world_map_110m.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(bars.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(bars.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(box_chart.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(box_chart.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(circles.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(circles.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(contours.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(contours.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(filled_area.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(filled_area.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(network.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(network.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(parallel_lines.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(parallel_lines.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(stair.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(stair.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(string_function.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(string_function.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(surface.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(surface.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(vectors.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(vectors.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+matplot.lib(histcounts.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+matplot.lib(histcounts.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+nodesoup.lib(nodesoup.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+nodesoup.lib(nodesoup.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+nodesoup.lib(fruchterman_reingold.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+nodesoup.lib(fruchterman_reingold.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+nodesoup.lib(kamada_kawai.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+nodesoup.lib(kamada_kawai.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+nodesoup.lib(layout.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+nodesoup.lib(layout.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+nodesoup.lib(algebra.obj) : error LNK2038: 检测到“_ITERATOR_DEBUG_LEVEL”的不匹配项: 值“0”不匹配值“2”(knn_algorithm.obj 中)
+nodesoup.lib(algebra.obj) : error LNK2038: 检测到“RuntimeLibrary”的不匹配项: 值“MD_DynamicRelease”不匹配值“MDd_DynamicDebug”(knn_algorithm.obj 中)
+LINK : warning LNK4098: 默认库“MSVCRT”与其他库的使用冲突；请使用 /NODEFAULTLIB:library
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_SetDIBitsToDevice，函数 "public: struct cimg_library::CImgDisplay & __cdecl cimg_library::CImgDisplay::paint(void)" (?paint@CImgDisplay@cimg_library@@QEAAAEAU12@XZ) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_TrackMouseEvent，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_GetMessageA，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_DispatchMessageA，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_PeekMessageA，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_DefWindowProcA，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_CreateWindowExA，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_DestroyWindow，函数 "int __cdecl cimg_library::cimg::dialog<unsigned char>(char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,struct cimg_library::CImg<unsigned char> const &,bool)" (??$dialog@E@cimg@cimg_library@@YAHQEBD0000000AEBU?$CImg@E@1@_N@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_ShowWindow，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_SetWindowPos，函数 "public: struct cimg_library::CImgDisplay & __cdecl cimg_library::CImgDisplay::move(int,int)" (?move@CImgDisplay@cimg_library@@QEAAAEAU12@HH@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_SetForegroundWindow，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_GetDC，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_GetWindowRect，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_AdjustWindowRect，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_ShowCursor，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_GetWindowLongPtrA，函数 "public: static __int64 __cdecl cimg_library::CImgDisplay::_handle_events(struct HWND__ *,unsigned int,unsigned __int64,__int64)" (?_handle_events@CImgDisplay@cimg_library@@SA_JPEAUHWND__@@I_K_J@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_SetWindowLongPtrA，函数 "public: static unsigned long __cdecl cimg_library::CImgDisplay::_events_thread(void *)" (?_events_thread@CImgDisplay@cimg_library@@SAKPEAX@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_ChangeDisplaySettingsA，函数 "int __cdecl cimg_library::cimg::dialog<unsigned char>(char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,char const * const,struct cimg_library::CImg<unsigned char> const &,bool)" (??$dialog@E@cimg@cimg_library@@YAHQEBD0000000AEBU?$CImg@E@1@_N@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_EnumDisplaySettingsA，函数 "public: struct cimg_library::CImgDisplay & __cdecl cimg_library::CImgDisplay::_assign(unsigned int,unsigned int,char const * const,unsigned int,bool,bool)" (?_assign@CImgDisplay@cimg_library@@QEAAAEAU12@IIQEBDI_N1@Z) 中引用了该符号
+matplot.lib(common.obj) : error LNK2019: 无法解析的外部符号 __imp_SHGetSpecialFolderPathA，函数 "char const * __cdecl cimg_library::cimg::programfiles_path(char const * const,bool)" (?programfiles_path@cimg@cimg_library@@YAPEBDQEBD_N@Z) 中引用了该符号
+E:\code\pushcode\MachineLearing\KNN\KNN_Project_C\x64\Debug\KNN_Project1.exe : fatal error LNK1120: 20 个无法解析的外部命令
