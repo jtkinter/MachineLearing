@@ -32,7 +32,8 @@ double Gini(const std::vector<int>& fqcy, int num)
 	return sum;
 }
 
-std::vector<double> branch(std::vector<std::vector<int>>& features, std::vector<int>& tags, double(classifier)(const std::vector<int>&, int), bool ratio = false)
+template<bool ratio = false>
+auto branch(std::vector<std::vector<int>>& features, std::vector<int>& tags, double(classifier)(const std::vector<int>&, int))
 {
 	if (features.empty())
 		CatchErr("branch: 数据为空");
@@ -43,6 +44,10 @@ std::vector<double> branch(std::vector<std::vector<int>>& features, std::vector<
 	double base_value = (classifier == Ent ? classifier(bincount(tags), sample) : -1);
 	std::vector<double> values;
 	values.reserve(tags.size());
+
+	std::vector<double> iv;
+	iv.reserve(tags.size());
+
 	for (auto& feature : features)
 	{
 		auto& [tag, cnt] = unique<true>(feature);
@@ -56,10 +61,14 @@ std::vector<double> branch(std::vector<std::vector<int>>& features, std::vector<
 			auto sublist = splitlist(in(feature, t), tags);
 			count_value += ((double)c / sample) * classifier(bincount(sublist), c);
 		}
-		values.push_back(base_value >= 0 ? (base_value - count_value)/rate : count_value);
+		values.push_back(base_value >= 0 ? base_value - count_value : count_value);
+		iv.push_back(rate);
 	}
 
-	return values;
+	if constexpr (ratio)
+		return std::make_pair(values, iv);
+	else
+		return values;
 }
 
 //std::vector<double> Gain(std::vector<Data>& data)
@@ -68,14 +77,28 @@ std::vector<double> branch(std::vector<std::vector<int>>& features, std::vector<
 //	return Gain(features, tags);
 //}
 
-std::vector<double> Gain(std::vector<std::vector<int>>& features, std::vector<int>& tags)
+int Gain(std::vector<std::vector<int>>& features, std::vector<int>& tags)
 {
-	return branch(features, tags, Ent);
+	auto val = branch(features, tags, Ent);
+	return std::max_element(val.begin(), val.end()) - val.begin();
 }
 
-std::vector<double> GainRatio(std::vector<std::vector<int>>& features, std::vector<int>& tags)
+int GainRatio(std::vector<std::vector<int>>& features, std::vector<int>& tags)
 {
-	return branch(features, tags, Ent, true);
+	auto [val, iv] = branch<true>(features, tags, Ent);
+	if (val.empty() || iv.empty())
+		return -1;
+
+	double avg = std::accumulate(val.begin(), val.end(), 0) / val.size();
+	std::vector<double> ratio;
+	ratio.reserve(val.size()/2+1);
+	for (int i = 0; i < val.size(); ++i)
+	{
+		if (val[i] > avg)
+			ratio.push_back(val[i] / iv[i]);
+	}
+
+	return std::max_element(ratio.begin(), ratio.end()) - ratio.begin();
 }
 
 //std::vector<double> CART(std::vector<Data>& data)
@@ -84,9 +107,10 @@ std::vector<double> GainRatio(std::vector<std::vector<int>>& features, std::vect
 //	return CART(features, tags);
 //}
 
-std::vector<double> CART(std::vector<std::vector<int>>& features, std::vector<int>& tags)
+int CART(std::vector<std::vector<int>>& features, std::vector<int>& tags)
 {
-	return branch(features, tags, Gini);
+	auto val = branch(features, tags, Gini);
+	return std::min_element(val.begin(), val.end()) - val.begin();
 }
 
 DecisionTreeNode* CreateDecistionTree(std::vector<std::vector<int>> features, std::vector<int> tags,
@@ -101,10 +125,11 @@ DecisionTreeNode* CreateDecistionTree(std::vector<std::vector<int>> features, st
 		return new DecisionTreeNode(max_tag, -1, true);
 	}
 
-	auto val = classifier(features, tags);
-	int idx = (classifier == Gain || classifier == GainRatio ? std::max_element(val.begin(), val.end()) : std::min_element(val.begin(), val.end())) - val.begin();
+	int idx = classifier(features, tags);
 	if (idx >= features.size())
 		CatchErr("CreateDecisionTree: 最大值索引超过数据集大小");
+	if (idx == -1)
+		CatchErr("出现空数据集，导致信息增益率计算出错");
 
 	std::vector<int> values(features[idx]);
 	auto typenumlist = unique(values);

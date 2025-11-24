@@ -1,9 +1,40 @@
 ﻿cl : 命令行  warning D9025: 正在重写“/Oi”(用“/Oi-”)
-  plotshow.cpp
-E:\code\C++\CML\DecisionTree\DecisionTree\vendor\Matplot++ 1.2.0\include\matplot\core\line_spec.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
-  (编译源文件“src/plotshow.cpp”)
+  decisionTree_algorithm.cpp
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(40,13): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+      E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(40,13):
+      模板实例化上下文(最早的实例化上下文)为
+          E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(82,13):
+          查看对正在编译的函数 模板 实例化“auto branch<false>(std::vector<std::vector<int,std::allocator<int>>,std::allocator<std::vector<int,std::allocator<int>>>> &,std::vector<int,std::allocator<int>> &,double (__cdecl *)(const std::vector<int,std::allocator<int>> &,int))”的引用
   
-E:\code\C++\CML\DecisionTree\DecisionTree\src\plotshow.cpp(18,10): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
-E:\code\C++\CML\DecisionTree\DecisionTree\src\plotshow.cpp(42,78): warning C4305: “参数”: 从“double”到“float”截断
-E:\code\C++\CML\DecisionTree\DecisionTree\src\plotshow.cpp(89,9): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(54,10): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(83,50): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(92,13): warning C4244: “初始化”: 从“unsigned __int64”转换到“double”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(101,54): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(113,50): warning C4244: “return”: 从“__int64”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(124,15): warning C4244: “初始化”: 从“__int64”转换到“int”，可能丢失数据
+E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(186,10): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26): warning C4244: “=”: 从“double”转换到“_Ty”，可能丢失数据
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26): warning C4244:         with
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26): warning C4244:         [
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26): warning C4244:             _Ty=int
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26): warning C4244:         ]
+  (编译源文件“src/decisionTree_algorithm.cpp”)
+      C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(33,26):
+      模板实例化上下文(最早的实例化上下文)为
+          E:\code\C++\CML\DecisionTree\DecisionTree\src\decisionTree_algorithm.cpp(92,20):
+          查看对正在编译的函数 模板 实例化“_Ty std::accumulate<std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>,int>(const _InIt,const _InIt,_Ty)”的引用
+          with
+          [
+              _Ty=int,
+              _InIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>
+          ]
+          C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\numeric(42,17):
+          查看对正在编译的函数 模板 实例化“_Ty std::accumulate<_InIt,_Ty,std::plus<void>>(const _InIt,const _InIt,_Ty,_Fn)”的引用
+          with
+          [
+              _Ty=int,
+              _InIt=std::_Vector_iterator<std::_Vector_val<std::_Simple_types<double>>>,
+              _Fn=std::plus<void>
+          ]
+  
   DecisionTree.vcxproj -> E:\code\C++\CML\DecisionTree\bin\DecisionTree.exe

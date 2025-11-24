@@ -5,12 +5,13 @@
 #include <queue>
 #include <iostream>
 #include <sstream>
+#include <numeric>
 
 struct Data;
 struct DecisionTreeNode
 {
-	int val; // feature type
-	int feature; // From parent-node's feature
+	int val; // value From parent-node's feature
+	int feature; // feature type
 	bool is_leaf;
 	std::vector<DecisionTreeNode*> Children;
 
@@ -47,16 +48,16 @@ struct DecisionTreeNode
 
 
 // 计算信息增益
-std::vector<double> Gain(std::vector<std::vector<int>>& features, std::vector<int>& tags);
+int Gain(std::vector<std::vector<int>>& features, std::vector<int>& tags);
 
 // 计算信息增益率
-std::vector<double> GainRatio(std::vector<std::vector<int>>& features, std::vector<int>& tags);
+int GainRatio(std::vector<std::vector<int>>& features, std::vector<int>& tags);
 
 // 计算基尼系数
-std::vector<double> CART(std::vector<std::vector<int>>& features, std::vector<int>& tags);
+int CART(std::vector<std::vector<int>>& features, std::vector<int>& tags);
 
 // 创建决策树
-using ClassifierFunc = std::vector<double>(*)(std::vector<std::vector<int>>&, std::vector<int>&);
+using ClassifierFunc = int(*)(std::vector<std::vector<int>>&, std::vector<int>&);
 DecisionTreeNode* CreateDecistionTree(std::vector<std::vector<int>> features, std::vector<int> tags,
 	std::vector<int> idxlist, ClassifierFunc classifier);
 
