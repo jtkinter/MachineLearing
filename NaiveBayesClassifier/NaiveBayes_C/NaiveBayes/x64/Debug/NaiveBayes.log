@@ -1,0 +1,13 @@
+﻿  bayes.cpp
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\datadeal.h(49,2): warning C4984: "if constexpr" 是一种 C++17 语言扩展
+  (编译源文件“src/bayes.cpp”)
+  
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(65,15): warning C4244: “初始化”: 从“unsigned __int64”转换到“double”，可能丢失数据
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(66,13): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(67,13): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(79,37): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(79,37): warning C4267:         with
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(79,37): warning C4267:         [
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(79,37): warning C4267:             _Ty=int
+E:\code\C++\CML\NaiveBayes\NaiveBayes\src\bayes.cpp(79,37): warning C4267:         ]
+  NaiveBayes.vcxproj -> E:\code\C++\CML\NaiveBayes\x64\Debug\NaiveBayes.exe
