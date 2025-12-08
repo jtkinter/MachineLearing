@@ -24,7 +24,7 @@ if __name__ == "__main__":
     train_features = train_features[split_num:]
     train_tags = train_tags[split_num:]
 
-    tag_list = list(range(len(train_tags)))
+    tag_list = list(range(train_features.shape[1]))
     pre_id3_tree = create_decision_tree_pre_pruning(train_features, train_tags, tag_list, verify_features, verify_tags, gain)
     pre_c4_5_tree = create_decision_tree_pre_pruning(train_features, train_tags, tag_list, verify_features, verify_tags, gain_ratio)
     pre_cart_tree = create_decision_tree_pre_pruning(train_features, train_tags, tag_list, verify_features, verify_tags, cart)

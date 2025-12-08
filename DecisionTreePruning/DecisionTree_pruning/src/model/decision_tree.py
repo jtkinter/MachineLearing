@@ -9,39 +9,39 @@ class DecisionTreeNode:
         self.is_leaf = children is None
 
 # 决策树核心代码
-def core_create_tree(features: np.ndarray, tags: np.ndarray, idx_list: list[int],
+def core_create_tree(features: np.ndarray, tags: np.ndarray, idx_list: list[int], train_mask: np.ndarray,
                      classifier: callable([[np.ndarray, np.ndarray], int]),
                      verify_f: np.ndarray = None, verify_t: np.ndarray = None,
                      mask: np.ndarray = None, pruning = False
                      ) -> DecisionTreeNode | None:
+    current_features = features[train_mask][:, idx_list]
+    current_tags = tags[train_mask]
     max_tag = int(np.argmax(np.bincount(tags)))
-    if len(np.unique(tags)) == 1:  # 如果预测类别只有一种，就停止决策树的生长
-        return DecisionTreeNode(-1, tags[0], max_tag)
+    if len(np.unique(current_tags)) == 1:  # 如果预测类别只有一种，就停止决策树的生长
+        return DecisionTreeNode(-1, current_tags[0], max_tag)
     if len(idx_list) == 0:  # 如果特征类别没了，没有能选择的特征，就停止决策树的生长
         return DecisionTreeNode(-1, max_tag, max_tag)
 
     # 获取最佳特征下标
-    idx = classifier(features, tags)
+    idx = classifier(current_features, current_tags)
     if idx == -1:
         return None
-    value = features[:, idx]  # 获取特征列
+    value = current_features[:, idx]  # 获取特征列
     classes = np.unique(value)  # 获取特征类别
 
     # 更新数据集
-    new_features = np.delete(features, obj=idx, axis=1)
     new_idx_list = copy.deepcopy(idx_list)
     new_idx_list.pop(idx)  # 删除特征列表中被选中的特征
 
     # 生成子节点
     children = []
     for cls in classes:
-        # 划分数据集
-        sub_list = (cls == value)
-        sub_features = new_features[sub_list]
-        sub_tags = tags[sub_list]
+        # 生成训练集划分掩码
+        sub_mask = copy.deepcopy(train_mask)
+        sub_mask[train_mask] &= (value == cls)
 
         update_mask = (cls == verify_f[:, idx_list[idx]]) & mask if not mask is None else mask
-        child = core_create_tree(sub_features, sub_tags, new_idx_list, classifier,
+        child = core_create_tree(features, tags, new_idx_list, sub_mask, classifier,
                                  verify_f, verify_t, update_mask, pruning)
         child.val = cls
         children.append(child)
@@ -70,15 +70,17 @@ def core_create_tree(features: np.ndarray, tags: np.ndarray, idx_list: list[int]
 def create_decision_tree(features: np.ndarray, tags: np.ndarray, idx_list: list[int],
                          classifier: callable([[np.ndarray, np.ndarray], int])
                          ) -> DecisionTreeNode | None:
-    return core_create_tree(features, tags, idx_list, classifier)
+    train_mask = np.ones(len(features), dtype=bool)
+    return core_create_tree(features, tags, idx_list, train_mask, classifier)
 
 # 生成预剪枝处理过的决策树
 def create_decision_tree_pre_pruning(features: np.ndarray, tags: np.ndarray,
                                      idx_list: list[int], verify_f: np.ndarray, verify_t: np.ndarray,
                                      classifier: callable([[np.ndarray, np.ndarray], int]),
                                      ) -> DecisionTreeNode | None:
+    train_mask = np.ones(len(features), dtype=bool)
     mask = np.ones(len(verify_t), dtype=bool)
-    return core_create_tree(features, tags, idx_list, classifier, verify_f, verify_t, mask, True)
+    return core_create_tree(features, tags, idx_list, train_mask, classifier, verify_f, verify_t, mask, True)
 
 # 后剪枝处理
 def post_pruning(root: DecisionTreeNode, verify_f: np.ndarray, verify_t: np.ndarray) -> DecisionTreeNode | None:
