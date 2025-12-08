@@ -152,10 +152,11 @@ if __name__ == "__main__":
     prevent_overflow = False
     prior, ds, ct = get_prob_cnt(train_data, prevent_overflow)
     res = predict(prior, ds, ct, test_data, prevent_overflow)
-    print(res)
-    print(prior)
-    print(ds)
-    for (key, value) in ct.items():
-        print(key)
-        for v in value:
-            print(v.mean, v.variance, v.deviation)
+    for r in res:
+        print(f"预测结果：{r:.0f}")
+    # print(prior)
+    # print(ds)
+    # for (key, value) in ct.items():
+    #     print(key)
+    #     for v in value:
+    #         print(v.mean, v.variance, v.deviation)
