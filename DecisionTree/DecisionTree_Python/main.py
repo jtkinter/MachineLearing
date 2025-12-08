@@ -10,7 +10,7 @@ plt.rcParams['axes.unicode_minus'] = False    # 用来显示负号
 
 if __name__ == "__main__":
     train_features, train_tags = load_data("dataSource/dataset.txt")
-    tag_list = list(range(len(train_tags)))
+    tag_list = list(range(train_features.shape[1]))
     id3_tree = create_decision_tree(train_features, train_tags, tag_list, gain)
     c4_5_tree = create_decision_tree(train_features, train_tags, tag_list, gain_ratio)
     cart_tree = create_decision_tree(train_features, train_tags, tag_list, cart)
