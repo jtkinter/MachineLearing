@@ -1,0 +1,14 @@
+﻿  main.cpp
+E:\code\C++\CML\SVM\test\main.cpp(53,29): warning C4267: “参数”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\SVM\test\main.cpp(57,26): warning C4267: “=”: 从“size_t”转换到“int”，可能丢失数据
+E:\code\C++\CML\SVM\test\main.cpp(64,68): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+E:\code\C++\CML\SVM\test\main.cpp(64,68): warning C4267:         with
+E:\code\C++\CML\SVM\test\main.cpp(64,68): warning C4267:         [
+E:\code\C++\CML\SVM\test\main.cpp(64,68): warning C4267:             _Ty=int
+E:\code\C++\CML\SVM\test\main.cpp(64,68): warning C4267:         ]
+E:\code\C++\CML\SVM\test\main.cpp(97,15): warning C4267: “初始化”: 从“size_t”转换到“int”，可能丢失数据
+  正在生成代码
+  Previous IPDB not found, fall back to full compilation.
+  All 217 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  已完成代码的生成
+  test.vcxproj -> E:\code\C++\CML\SVM\x64\Release\test.exe
