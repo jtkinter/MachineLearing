@@ -3,7 +3,7 @@
 #include "datadeal.h"
 #include "svm.h"
 
-double linear_predict(SVM& model, Sample& sample)
+double linear_predict(const SVM& model, const Sample& sample)
 {
 	double cnt = model.b;
 	cnt += kernel(model.w, sample.features);
@@ -14,39 +14,19 @@ double linear_predict(SVM& model, Sample& sample)
 	return result;
 }
 
-double gauss_predict(SVM& model, Sample& sample)
+double nolinear_predict(const SVM& model, const Sample& sample)
 {
 	double cnt = 0.0;
 	size_t support_sz = model.support_vectors.size();
+
 	const KernelType type = model.kernel_type;
-	const double sigma = model.val;
+	const double gamma = model.val;
 	for (size_t i = 0; i < support_sz; ++i)
 	{
 		const Sample& sv = model.support_vectors[i];
 		double alpha = model.alpha[i];
 		double y = sv.tag;
-		double val = kernel(sample.features, sv.features, type, sigma);
-		cnt += alpha * y * val;
-	}
-
-	double result = 0.0;
-	if (fabs(cnt) > model.tol)
-		result = (cnt > 0.0 ? 1.0 : -1.0);
-
-	return result;
-}
-
-double polynomial_predict(const SVM& model, const Sample& sample)
-{
-	double cnt = 0.0;
-	double fx = model.b;
-	size_t support_sz = model.support_vectors.size();
-	for (size_t i = 0; i < support_sz; ++i)
-	{
-		const Sample& sv = model.support_vectors[i];
-		double alpha = model.alpha[i];
-		double y = sv.tag;
-		double val = kernel(sv.features, sample.features, model.kernel_type, model.val);
+		double val = kernel(sv.features, sample.features, type, gamma);
 		cnt += alpha * y * val;
 	}
 
@@ -69,10 +49,8 @@ void evaluate(SVM& model, std::vector<Sample>& samples)
 			res = linear_predict(model, sample);
 			break;
 		case KernelType::GAUSSRBF:
-			res = gauss_predict(model, sample);
-			break;
 		case KernelType::POLYNOMIAL:
-			res = polynomial_predict(model, sample);
+			res = nolinear_predict(model, sample);
 			break;
 		default:
 			std::cout << "未知核技巧，使用默认的线性点乘" << std::endl;

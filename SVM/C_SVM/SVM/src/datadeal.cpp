@@ -66,6 +66,7 @@ std::vector<Sample> loadData(const std::string& filepath)
 	return samples;
 }
 
+// 发现与多项式核冲突了，放大特征分布，多项式核对特征分布敏感
 void normalize(std::vector<Sample>& samples)
 {
 	if (samples.empty())

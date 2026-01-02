@@ -143,7 +143,8 @@ double calculate_error(const Model& model, size_t idx)
 	for (size_t i = 0; i < model.samples.size(); ++i)
 	{
 		const Sample& sk = model.samples[i];
-		fx += model.alpha[i] * sk.tag * dot(sk.features, sample.features);
+		fx += model.alpha[i] * sk.tag * kernel(sk.features, sample.features,
+			model.kernel_type, model.get_kernel_val());
 	}
 
 	return fx - sample.tag;
@@ -245,7 +246,7 @@ void train(Model& model)
 	int continue_no_update = 0;
 	calculate_error_model(model);
 	const KernelType type = model.kernel_type;
-	const double val = model.sigma;
+	const double val = model.get_kernel_val();
 	while (it < model.max_iteration && continue_no_update < model.max_continue_no_iter)
 	{
 		int change_alpha = 0;
@@ -290,8 +291,11 @@ void train(Model& model)
 				continue;
 			}
 
-			double eta = kernel(sp1.features, sp1.features, type, val) + kernel(sp2.features, sp2.features, type, val)
-				- 2 * kernel(sp1.features, sp2.features, type, val);
+			double k11 = kernel(sp1.features, sp1.features, type, val);
+			double k12 = kernel(sp1.features, sp2.features, type, val);
+			double k22 = kernel(sp2.features, sp2.features, type, val);
+
+			double eta = k11 + k22 - 2 * k12;
 			if (eta <= model.tolerant)
 			{
 				//std::cout << "train: eta过小，给" << i << "设置冷静期" << std::endl;
@@ -306,10 +310,6 @@ void train(Model& model)
 				continue;
 			}
 			model.alpha[i] += y1 * y2 * (a2 - model.alpha[j]);
-
-			double k11 = kernel(sp1.features, sp1.features, type, val);
-			double k12 = kernel(sp1.features, sp2.features, type, val);
-			double k22 = kernel(sp2.features, sp2.features, type, val);
 
 			double b1 = model.b - e1 - y1 * (model.alpha[i] - a1) * k11 - y2 * (model.alpha[j] - a2) * k12;
 			double b2 = model.b - e2 - y2 * (model.alpha[j] - a2) * k22 - y1 * (model.alpha[i] - a1) * k12;

@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
     const std::string testfile = "source/ex6data1.mat";
 
     auto samples = loadData(trainfile);
-    normalize(samples);
+    //normalize(samples);
 
     auto classifier = group(samples);
     distrshow(classifier);
@@ -35,7 +35,7 @@ int main(int argc, char** argv) {
     supportshow(class_support_group);
 
     auto testset = loadData(testfile);
-    normalize(testset);
+    //normalize(testset);
     evaluate(svm_model, testset);
 
     return 0;
