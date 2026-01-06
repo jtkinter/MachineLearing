@@ -15,6 +15,12 @@ struct Sample
 	}
 };
 
+struct NormalizeStats
+{
+	std::vector<double> means;
+	std::vector<double> deviation;
+};
+
 // 读取数据
 std::vector<Sample> loadData(const std::string& filepath);
 
@@ -22,4 +28,7 @@ std::vector<Sample> loadData(const std::string& filepath);
 std::unordered_map<double, std::pair<std::vector<double>, std::vector<double>>> group(const std::vector<Sample>& samples);
 
 // 标准化
-void normalize(std::vector<Sample>& samples);
+NormalizeStats normalize(std::vector<Sample>& samples, const NormalizeStats& stats);
+
+// 归一化
+void uniformize(std::vector<Sample>& samples);

@@ -16,13 +16,16 @@ int main(int argc, char** argv) {
     const std::string trainfile = "source/ex6data2.mat";
     const std::string testfile = "source/ex6data1.mat";
 
+
     auto samples = loadData(trainfile);
-    //normalize(samples);
+    auto stats = NormalizeStats();
+    uniformize(samples);
+    //stats =  normalize(samples, stats);
 
     auto classifier = group(samples);
     distrshow(classifier);
 
-    auto model = build_model(samples, KernelType::GAUSSRBF);
+    auto model = build_model(samples, KernelType::POLYNOMIAL);
     std::cout << "alpha一览：" << std::endl;
     for (double a : model.alpha)
     {
@@ -35,7 +38,8 @@ int main(int argc, char** argv) {
     supportshow(class_support_group);
 
     auto testset = loadData(testfile);
-    //normalize(testset);
+    uniformize(testset);
+    //stats = normalize(testset, stats);
     evaluate(svm_model, testset);
 
     return 0;
