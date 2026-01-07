@@ -18,14 +18,14 @@ int main(int argc, char** argv) {
 
 
     auto samples = loadData(trainfile);
-    auto stats = NormalizeStats();
     uniformize(samples);
+    //auto stats = NormalizeStats();
     //stats =  normalize(samples, stats);
 
     auto classifier = group(samples);
     distrshow(classifier);
 
-    auto model = build_model(samples, KernelType::POLYNOMIAL);
+    auto model = build_model(samples, KernelType::GAUSSRBF);
     std::cout << "alpha一览：" << std::endl;
     for (double a : model.alpha)
     {
@@ -38,8 +38,9 @@ int main(int argc, char** argv) {
     supportshow(class_support_group);
 
     auto testset = loadData(testfile);
-    uniformize(testset);
     //stats = normalize(testset, stats);
+    uniformize(testset);
+    //auto classifier = group(testset);
     evaluate(svm_model, testset);
 
     return 0;

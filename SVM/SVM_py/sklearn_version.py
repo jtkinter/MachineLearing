@@ -42,15 +42,47 @@ def contrast_show(text: str, svm, ax: plt.axes, X: np.ndarray, y: np.ndarray) ->
     ax.contourf(xx, yy, z, alpha=0.3, cmap=plt.cm.coolwarm)
     distribution(ax, X, y, text)
 
+def uniformize(datas: np.ndarray) -> np.ndarray:
+    if datas.size == 0:
+        return datas
+    if len(datas.shape) > 1:
+        col_size = datas.shape[1]
+        for col in range(col_size):
+            col_val = datas[:, col]
+            max_val = np.max(col_val)
+            min_val = np.min(col_val)
+            if np.isclose(max_val, min_val):
+                datas[:, col] = 0.0
+            else:
+                datas[:, col] = (col_val - min_val) / (max_val - min_val)
+    else:
+        max_val = np.max(datas)
+        min_val = np.min(datas)
+        if np.isclose(max_val, min_val):
+            datas = np.zeros_like(datas)
+        else:
+            datas = (datas - min_val) / (max_val - min_val)
+
+    return datas
 
 if __name__ == "__main__":
-    X_train, y_train = load_mat_data("source/ex6data2.mat")
-    X_test, y_test = load_mat_data("source/ex6data1.mat")
+    X_train, y = load_mat_data("source/ex6data2.mat")
+
+    rng = np.random.RandomState(42)
+    idx = rng.permutation(len(X_train))  # 用独立生成器做随机排列
+    idx = np.random.permutation(len(X_train))
+    train_idx = idx[:int(0.8 * len(X_train))]
+    test_idx = idx[int(0.8 * len(X_train)):]
+    x_train, y_train = X_train[train_idx], y[train_idx]
+    x_test, y_test = X_train[test_idx], y[test_idx]
+
+    uniformize(x_train)
+    uniformize(x_test)
 
     # 生成线性核支持向量机
     linear_model = SVC(kernel="linear", C=1.0)
     # 生成高斯RBF核支持向量机
-    gauss_model = SVC(kernel="rbf", gamma="auto", C=1.0)
+    gauss_model = SVC(kernel="rbf", gamma="scale", C=1.0)
     # 生成多项式核支持向量机
     poly_model = SVC(kernel="poly", gamma="auto", degree=3, C=1.0, coef0=0.0)
 
@@ -62,10 +94,10 @@ if __name__ == "__main__":
 
     fig, axs = plt.subplots(1, 3, figsize=(16, 6))
     for i, (name, model) in enumerate(models.items(), 0):
-        model.fit(X_train, y_train)
-        predict_res = model.predict(X_test)
+        model.fit(x_train, y_train)
+        predict_res = model.predict(x_test)
         print(f"{name}的准确率为{accuracy_score(y_test, predict_res)*100:.1f}%")
 
-        contrast_show(name, model, axs[i], X_train, y_train)
+        contrast_show(name, model, axs[i], x_train, y_train)
     plt.show()
 

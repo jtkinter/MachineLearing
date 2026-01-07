@@ -14,8 +14,8 @@ class Model:
                  C: float = 1.0, tolerant:float = 1e-6, val: float = 1.0,
                  max_it: int = 50, max_no_change: int = 15, info: bool = False):
         # 训练集
-        self.X = X # 特征
-        self.y = y # 标签
+        self.X = X.copy().astype(float) # 特征
+        self.y = y.copy().astype(float) # 标签
         self.errors = np.zeros(len(X), dtype=float) # 降低时间复杂度
 
         # 超参数
@@ -121,7 +121,11 @@ class Model:
                 fx1 = e1 + y1
                 cases = y1 * fx1
 
-                kkt = self.tol < a1 < self.C - self.tol or (a1 <= self.tol and cases < 1.0 - self.tol) or (a1 >= self.C - self.tol and cases > 1.0 + self.tol)
+                kkt = (
+                            (self.C - self.tol > a1 > self.tol >= 1.0 - np.fabs(cases))
+                       or   (a1 <= self.tol and cases < 1.0 - self.tol)
+                       or   (a1 >= self.C - self.tol and cases > 1.0 + self.tol)
+                )
                 if not kkt:
                     continue
 
@@ -133,7 +137,6 @@ class Model:
                 a2 = self.alpha[j]
                 y2 = self.y[j]
 
-                l, h = 0.0, 0.0
                 if y1 == y2:
                     l = max(0.0, float(a2 + a1 - self.C))
                     h = min(self.C, float(a1 + a2))
@@ -151,14 +154,15 @@ class Model:
                 if eta < self.tol:
                     continue
 
-                self.alpha[j] += y2 * (e1 - e2) / eta
-                self.alpha[j] = self.clip(l, h, float(self.alpha[j]))
-                if np.fabs(a2-self.alpha[j]) < self.tol:
+                a2_new = a2 + y2 * (e1 - e2) / eta
+                a2_new = self.clip(l, h, float(a2_new))
+                if np.fabs(a2-a2_new) < self.tol:
                     continue
 
+                self.alpha[j] = a2_new
                 self.alpha[i] += y1 * y2 * (a2-self.alpha[j])
 
-                b1 = self.b - e1 - y1 * (self.alpha[i] - a1) * k11 - y2 * (self.alpha[j] - a2) * k12
+                b1 = self.b - e1 - y1 * (self.alpha[i] - a1) * k11 - y2 * (self.alpha[i] - a1) * k12
                 b2 = self.b - e2 - y2 * (self.alpha[j] - a2) * k22 - y1 * (self.alpha[j] - a2) * k12
 
                 if self.tol < self.alpha[i] < self.C - self.tol:
@@ -233,12 +237,12 @@ class SVM:
         self.val = train_model.val
 
     def predict(self, x):
-        cnt = 0.0
+        cnt = self.b
         if self.kernel == "linear":
-            cnt += self.kernel_calculate(x, self.w) + self.b
+            cnt += self.kernel_calculate(x, self.w)
         else:
-            for alpha, X, y in zip(self.alpha, self.support_X, self.support_y):
-                 cnt += alpha * y * self.kernel_calculate(X, x)
+            for alpha, sx, sy in zip(self.alpha, self.support_X, self.support_y):
+                 cnt += alpha * sy * self.kernel_calculate(sx, x)
 
         if np.fabs(cnt) > self.tol:
             return 1.0 if cnt > 0.0 else -1.0
@@ -264,12 +268,10 @@ class SVM:
 
 # 将分布图画上去
 def distribution(x: np.ndarray, y: np.ndarray, text: str, mark='o', s=12, linewidth = 0.25) -> None:
-    plt.scatter(x[y == 0, 0], x[y == 0, 1], s=s, linewidths=linewidth, marker=mark,
+    plt.scatter(x[y == -1, 0], x[y == -1, 1], s=s, linewidths=linewidth, marker=mark,
                c='lightblue', label='Class 0', edgecolors='k')
     plt.scatter(x[y == 1, 0], x[y == 1, 1], s=s, linewidths=linewidth, marker=mark,
                c='salmon', label='Class 1', edgecolors='k')
-
-
     plt.xlabel('Feature 1')
     plt.ylabel('Feature 2')
     plt.legend()
@@ -280,12 +282,57 @@ def load_mat_data(filepath: str) -> tuple[np.ndarray, np.ndarray]:
     mat_data = scipy.io.loadmat(filepath)
     return mat_data['X'], mat_data['y'].ravel()
 
+# 归一化
+def uniformize(datas: np.ndarray) -> np.ndarray:
+    if datas.size == 0:
+        return datas
+    if len(datas.shape) > 1:
+        col_size = datas.shape[1]
+        for col in range(col_size):
+            col_val = datas[:, col]
+            max_val = np.max(col_val)
+            min_val = np.min(col_val)
+            if np.isclose(max_val, min_val):
+                datas[:, col] = 0.0
+            else:
+                datas[:, col] = (col_val - min_val) / (max_val - min_val)
+    else:
+        max_val = np.max(datas)
+        min_val = np.min(datas)
+        if np.isclose(max_val, min_val):
+            datas = np.zeros_like(datas)
+        else:
+            datas = (datas - min_val) / (max_val - min_val)
+
+    return datas
+
 if __name__ == "__main__":
-    x_train, y_train = load_mat_data("source/ex6data2.mat")
-    x_test, y_test = load_mat_data("source/ex6data1.mat")
+    X, y = load_mat_data("source/ex6data2.mat")
+
+    y = np.where(y == 0, -1, 1)
+
+    # 修复3：拆分训练/测试集（8:2）
+    # rng = np.random.RandomState(42)
+    # idx = rng.permutation(len(X))  # 用独立生成器做随机排列
+    idx = np.random.permutation(len(X))
+    train_idx = idx[:int(0.8 * len(X))]
+    test_idx = idx[int(0.8 * len(X)):]
+    x_train, y_train = X[train_idx], y[train_idx]
+    x_test, y_test = X[test_idx], y[test_idx]
+
+
+    # 修复4：归一化（或用standardize）
+    x_train = uniformize(x_train)
+    x_test = uniformize(x_test)
+
+    kernel_params = {
+        "linear": {"val": 1.0, "C": 1.0},
+        "rbf": {"val": 0.1, "C": 10.0},  # RBF核调小gamma，增大C
+        "poly": {"val": 3, "C": 5.0}     # Poly核用3阶
+    }
 
     for method in ["linear", "rbf", "poly"]:
-        model = Model(x_train, y_train, method)
+        model = Model(x_train, y_train, method, C=kernel_params[method]["C"], val=kernel_params[method]["val"])
         svm = SVM(model)
 
         print(f"基于{method}核的模型准确率：{svm.evaluate(x_test, y_test)*100:.1f}%")

@@ -258,7 +258,7 @@ void train(Model& model)
 			double fx1 = e1 + y1;
 			double cases = y1 * fx1;
 
-			bool kkt_case = (a1 > model.tolerant && a1 < model.C - model.tolerant && fabs(cases - 1.0) > model.tolerant)
+			bool kkt_case = (a1 > model.tolerant && a1 < model.C - model.tolerant && fabs(cases)-1.0 > model.tolerant)
 				|| (a1 <= model.tolerant && cases < 1.0 - model.tolerant)
 				|| (a1 >= model.C - model.tolerant && cases > 1.0 + model.tolerant);
 			if (!kkt_case) continue;
