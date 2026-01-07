@@ -32,3 +32,6 @@ NormalizeStats normalize(std::vector<Sample>& samples, const NormalizeStats& sta
 
 // 归一化
 void uniformize(std::vector<Sample>& samples);
+
+// 留出法获取训练集和测试集
+std::pair<std::vector<Sample>, std::vector<Sample>> split(std::vector<Sample>& datas);

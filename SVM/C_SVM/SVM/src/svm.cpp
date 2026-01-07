@@ -138,16 +138,52 @@ double calculate_error(const Model& model, size_t idx)
 		return 0.0;
 	}
 
+	const double val = model.get_kernel_val();
 	double fx = model.b;
 	const Sample& sample = model.samples[idx];
 	for (size_t i = 0; i < model.samples.size(); ++i)
 	{
 		const Sample& sk = model.samples[i];
 		fx += model.alpha[i] * sk.tag * kernel(sk.features, sample.features,
-			model.kernel_type, model.get_kernel_val());
+			model.kernel_type, val);
 	}
 
 	return fx - sample.tag;
+}
+
+size_t find_update(Model& model)
+{
+	const size_t sample_size = model.samples.size();
+	size_t best_i = sample_size;
+	double max_diff = 0;
+	if (sample_size <= 1)
+	{
+		std::cerr << "find_other: 样本数量不足，无法选择成对样本！" << std::endl;
+		return best_i;
+	}
+
+	for (size_t i = 0; i < sample_size; ++i)
+	{
+		double e1 = model.errors[i];
+		double a1 = model.alpha[i];
+		double y1 = model.samples[i].tag;
+		double fx1 = e1 + y1;
+		double cases = y1 * fx1;
+
+		bool kkt_case = (a1 > model.tolerant && a1 < model.C - model.tolerant && fabs(cases) - 1.0 > model.tolerant)
+			|| (a1 <= model.tolerant && cases < 1.0 - model.tolerant)
+			|| (a1 >= model.C - model.tolerant && cases > 1.0 + model.tolerant);
+		if (!kkt_case) continue;
+
+		const double diff = fabs(e1);
+		if(diff > max_diff)
+		{
+			best_i = i;
+			max_diff = diff;
+		}
+	}
+
+	return best_i;
 }
 
 // 启发式策略：寻找j
@@ -242,111 +278,97 @@ void train(Model& model)
 		return;
 	}
 
-	int it = 0;
 	int continue_no_update = 0;
 	calculate_error_model(model);
 	const KernelType type = model.kernel_type;
 	const double val = model.get_kernel_val();
-	while (it < model.max_iteration && continue_no_update < model.max_continue_no_iter)
+	for (size_t it = 0; it < model.max_iteration && continue_no_update < model.max_continue_no_iter; it++)
 	{
-		int change_alpha = 0;
-		for (size_t i = 0; i < model.samples.size(); ++i)
-		{
-			double e1 = model.errors[i];
-			double a1 = model.alpha[i];
-			double y1 = model.samples[i].tag;
-			double fx1 = e1 + y1;
-			double cases = y1 * fx1;
-
-			bool kkt_case = (a1 > model.tolerant && a1 < model.C - model.tolerant && fabs(cases)-1.0 > model.tolerant)
-				|| (a1 <= model.tolerant && cases < 1.0 - model.tolerant)
-				|| (a1 >= model.C - model.tolerant && cases > 1.0 + model.tolerant);
-			if (!kkt_case) continue;
-
-			size_t j = find_other(model, i, e1);
-
-			Sample& sp1 = model.samples[i];
-			Sample& sp2 = model.samples[j];
-
-			double e2 = model.errors[j];
-			double a2 = model.alpha[j];
-			double y2 = sp2.tag;
-
-			double l, h;
-			if (y1 == y2)
-			{
-				l = std::max(0.0, a2 + a1 - model.C);
-				h = std::min(model.C, a1 + a2);
-			}
-			else
-			{
-				l = std::max(0.0, a2 - a1);
-				h = std::min(model.C, model.C + a2 - a1);
-			}
-			if (fabs(l - h) < model.tolerant)
-			{
-				//std::cout << "train: " 
-				//	<< "当前alpha组: " << "("<< i << "," << j << ") "
-				//	<< "上下界几乎一致，给" << i << "设置冷静期" << std::endl;
-				continue;
-			}
-
-			double k11 = kernel(sp1.features, sp1.features, type, val);
-			double k12 = kernel(sp1.features, sp2.features, type, val);
-			double k22 = kernel(sp2.features, sp2.features, type, val);
-
-			double eta = k11 + k22 - 2 * k12;
-			if (eta <= model.tolerant)
-			{
-				//std::cout << "train: eta过小，给" << i << "设置冷静期" << std::endl;
-				continue;
-			}
-
-			model.alpha[j] += y2 * (e1 - e2) / eta;
-			model.alpha[j] = clip(l, h, model.alpha[j]);
-			if (fabs(model.alpha[j] - a2) < model.tolerant)
-			{
-				//std::cout << "train: " << "当前alpha组" << "(" << i << "," << j << ") alpha[j]变化过小，已跳过" << std::endl;
-				continue;
-			}
-			model.alpha[i] += y1 * y2 * (a2 - model.alpha[j]);
-
-			double b1 = model.b - e1 - y1 * (model.alpha[i] - a1) * k11 - y2 * (model.alpha[j] - a2) * k12;
-			double b2 = model.b - e2 - y2 * (model.alpha[j] - a2) * k22 - y1 * (model.alpha[i] - a1) * k12;
-
-			if (model.alpha[i] > model.tolerant && model.alpha[i] < model.C - model.tolerant) model.b = b1;
-			else if (model.alpha[j] > model.tolerant && model.alpha[j] < model.C - model.tolerant) model.b = b2;
-			else model.b = (b1 + b2) / 2;
-
-			std::cout << "(" << i << ", " << j << ")  "
-				<< "alpha1: " << model.alpha[i] << "  alpha2: " << model.alpha[j]
-				<< "  b = " << model.b << std::endl;
-
-			model.errors[i] = calculate_error(model, i);
-			model.errors[j] = calculate_error(model, j);
-
-			change_alpha++;
-		}
-
-		it++;
-		if (change_alpha == 0)
+		size_t i = find_update(model);
+		if (i == model.samples.size())
 		{
 			continue_no_update++;
 			std::cout << "第" << it << "次无alpha值更新，连续无更新" << continue_no_update << "次..." << std::endl;
+			continue;
+		}
+
+		double e1 = model.errors[i];
+		double a1 = model.alpha[i];
+		double y1 = model.samples[i].tag;
+		double fx1 = e1 + y1;
+
+		size_t j = find_other(model, i, e1);
+
+		Sample& sp1 = model.samples[i];
+		Sample& sp2 = model.samples[j];
+
+		double e2 = model.errors[j];
+		double a2 = model.alpha[j];
+		double y2 = sp2.tag;
+
+		double l, h;
+		if (y1 == y2)
+		{
+			l = std::max(0.0, a2 + a1 - model.C);
+			h = std::min(model.C, a1 + a2);
 		}
 		else
 		{
-			if (model.kernel_type == KernelType::LINEAR)
-			{
-				update_w_final(model);
-				std::cout << "w: ";
-				for (double w : model.w)
-					std::cout << w << " ";
-				std::cout << std::endl;
-			}
-			continue_no_update = 0;
-			std::cout << "第" << it << "次更新了" << change_alpha*2 << "个alpha值..." << std::endl;
+			l = std::max(0.0, a2 - a1);
+			h = std::min(model.C, model.C + a2 - a1);
 		}
+		if (fabs(l - h) < model.tolerant)
+		{
+			//std::cout << "train: " 
+			//	<< "当前alpha组: " << "("<< i << "," << j << ") "
+			//	<< "上下界几乎一致，给" << i << "设置冷静期" << std::endl;
+			continue;
+		}
+
+		double k11 = kernel(sp1.features, sp1.features, type, val);
+		double k12 = kernel(sp1.features, sp2.features, type, val);
+		double k22 = kernel(sp2.features, sp2.features, type, val);
+
+		double eta = k11 + k22 - 2 * k12;
+		if (eta <= model.tolerant)
+		{
+			//std::cout << "train: eta过小，给" << i << "设置冷静期" << std::endl;
+			continue;
+		}
+
+		model.alpha[j] += y2 * (e1 - e2) / eta;
+		model.alpha[j] = clip(l, h, model.alpha[j]);
+		if (fabs(model.alpha[j] - a2) < model.tolerant)
+		{
+			//std::cout << "train: " << "当前alpha组" << "(" << i << "," << j << ") alpha[j]变化过小，已跳过" << std::endl;
+			continue;
+		}
+		model.alpha[i] += y1 * y2 * (a2 - model.alpha[j]);
+
+		double b1 = model.b - e1 - y1 * (model.alpha[i] - a1) * k11 - y2 * (model.alpha[j] - a2) * k12;
+		double b2 = model.b - e2 - y2 * (model.alpha[j] - a2) * k22 - y1 * (model.alpha[i] - a1) * k12;
+
+		if (model.alpha[i] > model.tolerant && model.alpha[i] < model.C - model.tolerant) model.b = b1;
+		else if (model.alpha[j] > model.tolerant && model.alpha[j] < model.C - model.tolerant) model.b = b2;
+		else model.b = (b1 + b2) / 2;
+
+		std::cout << "(" << i << ", " << j << ")  "
+			<< "alpha1: " << model.alpha[i] << "  alpha2: " << model.alpha[j]
+			<< "  b = " << model.b << std::endl;
+
+		model.errors[i] = calculate_error(model, i);
+		model.errors[j] = calculate_error(model, j);
+
+		if (model.kernel_type == KernelType::LINEAR)
+		{
+			update_w_final(model);
+			std::cout << "w: ";
+			for (double w : model.w)
+				std::cout << w << " ";
+			std::cout << std::endl;
+		}
+		continue_no_update = 0;
+		//std::cout << "第" << it << "次更新了" << change_alpha*2 << "个alpha值..." << std::endl;
 	}
 }
 

@@ -1,6 +1,7 @@
 #include "datadeal.h"
 
 #include <numeric>
+#include <random>
 
 void matinfo(matvar_t* matvar)
 {
@@ -176,4 +177,17 @@ void uniformize(std::vector<Sample>& samples)
 			val = (val - mins[j]) / maxs[j];
 		}
 	}
+}
+
+std::pair<std::vector<Sample>, std::vector<Sample>> split(std::vector<Sample>& datas)
+{
+	auto shuffle_data = std::vector<Sample>(datas.begin(), datas.end());
+	std::random_device rd;
+	std::mt19937 g(rd());
+	std::shuffle(shuffle_data.begin(), shuffle_data.end(), g);
+
+	size_t split_point = shuffle_data.size() * 0.8 ;
+	std::vector<Sample> traindata(shuffle_data.begin(), shuffle_data.begin() + split_point);
+	std::vector<Sample> testdata(shuffle_data.begin() + split_point, shuffle_data.end());
+	return std::make_pair(traindata, testdata);
 }

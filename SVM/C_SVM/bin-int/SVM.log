@@ -1,6 +1,14 @@
-﻿  main.cpp
+﻿  evaluate.cpp
+  main.cpp
 E:\code\C++\CML\SVM\SVM\vendor\Matplot++ 1.2.0\include\matplot\core\line_spec.h(1,1): warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
   (编译源文件“src/main.cpp”)
   
+  svm.cpp
+E:\code\C++\CML\SVM\SVM\src\svm.cpp(225,64): warning C4267: “参数”: 从“size_t”转换到“_Ty”，可能丢失数据
+E:\code\C++\CML\SVM\SVM\src\svm.cpp(225,64): warning C4267:         with
+E:\code\C++\CML\SVM\SVM\src\svm.cpp(225,64): warning C4267:         [
+E:\code\C++\CML\SVM\SVM\src\svm.cpp(225,64): warning C4267:             _Ty=int
+E:\code\C++\CML\SVM\SVM\src\svm.cpp(225,64): warning C4267:         ]
+  正在生成代码...
 datadeal.obj : warning LNK4075: 忽略“/EDITANDCONTINUE”(由于“/INCREMENTAL:NO”规范)
   SVM.vcxproj -> E:\code\C++\CML\SVM\bin\SVM.exe

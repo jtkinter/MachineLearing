@@ -74,6 +74,30 @@ class Model:
         for i in range(len(self.errors)):
             self.errors[i] = self.calculate_error(i)
 
+    # 启发式策略，寻找最佳更新i
+    def find_update(self) -> int:
+        best_i = self.X.shape[0]
+        max_diff = 0.0
+        for i in range(len(self.alpha)):
+            e1 = self.errors[i]
+            a1 = self.alpha[i]
+            y1 = self.y[i]
+            fx1 = e1 + y1
+            cases = y1 * fx1
+            kkt = (
+                    (self.C - self.tol > a1 > self.tol >= 1.0 - np.fabs(cases))
+                    or (a1 <= self.tol and cases < 1.0 - self.tol)
+                    or (a1 >= self.C - self.tol and cases > 1.0 + self.tol)
+            )
+            if not kkt:
+                continue
+
+            diff = np.fabs(self.errors[i])
+            if diff > max_diff:
+                max_diff = diff
+                best_i = i
+        return best_i
+
     # 通过启发式策略，根据i寻找j
     def find_other(self, idx: int, e1: float) -> int:
         best_j = idx
@@ -113,86 +137,74 @@ class Model:
         continue_no_update = 0
         self.update_error()
         while it < self.max_iteration and continue_no_update < self.max_continue_no_update:
-            change_alpha = 0
-            for i in range(len(self.alpha)):
-                e1 = self.errors[i]
-                a1 = self.alpha[i]
-                y1 = self.y[i]
-                fx1 = e1 + y1
-                cases = y1 * fx1
-
-                kkt = (
-                            (self.C - self.tol > a1 > self.tol >= 1.0 - np.fabs(cases))
-                       or   (a1 <= self.tol and cases < 1.0 - self.tol)
-                       or   (a1 >= self.C - self.tol and cases > 1.0 + self.tol)
-                )
-                if not kkt:
-                    continue
-
-                j = self.find_other(i, float(e1))
-                x1 = self.X[i]
-                x2 = self.X[j]
-
-                e2 = self.errors[j]
-                a2 = self.alpha[j]
-                y2 = self.y[j]
-
-                if y1 == y2:
-                    l = max(0.0, float(a2 + a1 - self.C))
-                    h = min(self.C, float(a1 + a2))
-                else:
-                    l = max(0.0, float(a2 - a1))
-                    h = min(self.C, float(self.C + a2 - a1))
-                if np.fabs(l-h) < self.tol:
-                    continue
-
-                k11 = self.kernel_calculate(x1, x1)
-                k12 = self.kernel_calculate(x1, x2)
-                k22 = self.kernel_calculate(x2, x2)
-
-                eta = k11 + k22 - 2 * k12
-                if eta < self.tol:
-                    continue
-
-                a2_new = a2 + y2 * (e1 - e2) / eta
-                a2_new = self.clip(l, h, float(a2_new))
-                if np.fabs(a2-a2_new) < self.tol:
-                    continue
-
-                self.alpha[j] = a2_new
-                self.alpha[i] += y1 * y2 * (a2-self.alpha[j])
-
-                b1 = self.b - e1 - y1 * (self.alpha[i] - a1) * k11 - y2 * (self.alpha[i] - a1) * k12
-                b2 = self.b - e2 - y2 * (self.alpha[j] - a2) * k22 - y1 * (self.alpha[j] - a2) * k12
-
-                if self.tol < self.alpha[i] < self.C - self.tol:
-                    self.b = b1
-                elif self.tol < self.alpha[j] < self.C - self.tol:
-                    self.b = b2
-                else:
-                    self.b = (b1+b2)/2
-
-                if self.info:
-                    print(f"更新alpha对：({i},{j}), b = {self.b}")
-
-                self.errors[i] = self.calculate_error(i)
-                self.errors[j] = self.calculate_error(j)
-
-                change_alpha += 1
-
             it += 1
-            if change_alpha:
-                continue_no_update = 0
-                if self.info:
-                    print(f"第{it}轮迭代，更新了{change_alpha*2}个alpha值...")
-                if self.kernel == "linear" or self.kernel == 0:
-                    self.update_w()
-                    if self.info:
-                        print(f"更新的w: {self.w}")
-            else:
+            
+            i = self.find_update()
+            if i == self.X.shape[0]:
                 continue_no_update += 1
                 if self.info:
                     print(f"第{it}轮迭代，已经连续没有更新{continue_no_update}轮了......")
+                continue
+            e1 = self.errors[i]
+            a1 = self.alpha[i]
+            y1 = self.y[i]
+
+            j = self.find_other(i, float(e1))
+            x1 = self.X[i]
+            x2 = self.X[j]
+
+            e2 = self.errors[j]
+            a2 = self.alpha[j]
+            y2 = self.y[j]
+
+            if y1 == y2:
+                l = max(0.0, float(a2 + a1 - self.C))
+                h = min(self.C, float(a1 + a2))
+            else:
+                l = max(0.0, float(a2 - a1))
+                h = min(self.C, float(self.C + a2 - a1))
+            if np.fabs(l-h) < self.tol:
+                continue
+
+            k11 = self.kernel_calculate(x1, x1)
+            k12 = self.kernel_calculate(x1, x2)
+            k22 = self.kernel_calculate(x2, x2)
+
+            eta = k11 + k22 - 2 * k12
+            if eta < self.tol:
+                continue
+
+            a2_new = a2 + y2 * (e1 - e2) / eta
+            a2_new = self.clip(l, h, float(a2_new))
+            if np.fabs(a2-a2_new) < self.tol:
+                continue
+
+            self.alpha[j] = a2_new
+            self.alpha[i] += y1 * y2 * (a2-self.alpha[j])
+
+            b1 = self.b - e1 - y1 * (self.alpha[i] - a1) * k11 - y2 * (self.alpha[i] - a1) * k12
+            b2 = self.b - e2 - y2 * (self.alpha[j] - a2) * k22 - y1 * (self.alpha[j] - a2) * k12
+
+            if self.tol < self.alpha[i] < self.C - self.tol:
+                self.b = b1
+            elif self.tol < self.alpha[j] < self.C - self.tol:
+                self.b = b2
+            else:
+                self.b = (b1+b2)/2
+
+            if self.info:
+                print(f"更新alpha对：({i},{j}), b = {self.b}")
+
+            self.errors[i] = self.calculate_error(i)
+            self.errors[j] = self.calculate_error(j)
+
+        continue_no_update = 0
+        # if self.info:
+        #     print(f"第{it}轮迭代，更新了{change_alpha*2}个alpha值...")
+        if self.kernel == "linear" or self.kernel == 0:
+            self.update_w()
+            if self.info:
+                print(f"更新的w: {self.w}")
 
 class SVM:
     def __init__(self, train_model: Model, valid_val: float = 1e-8):
